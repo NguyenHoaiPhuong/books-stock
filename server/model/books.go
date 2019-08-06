@@ -1,5 +1,10 @@
 package model
 
+const (
+	// BookCol : books
+	BookCol string = "books"
+)
+
 // Book struct includes ID, Title and Rating
 type Book struct {
 	ID     int     `json:"id" bson:"id"`

@@ -1,8 +1,8 @@
 package repo
 
 import (
-	"books-stock/server/error"
-	"books-stock/server/model"
+	"github.com/NguyenHoaiPhuong/books-stock/server/error"
+	"github.com/NguyenHoaiPhuong/books-stock/server/model"
 
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -55,7 +55,7 @@ func (db *MongoDB) EnsureIndex(databaseName string, collectionName string, index
 }
 
 // GetAllDocuments : get all documents in the given DB and Collection
-func (db *MongoDB) GetAllDocuments(databaseName string, collectionName string) ([]*model.Book, error.Error) {
+func (db *MongoDB) GetAllDocuments(databaseName string, collectionName string) ([]interface{}, error.Error) {
 	var err error.Imp
 	var docs []interface{}
 
@@ -71,44 +71,37 @@ func (db *MongoDB) GetAllDocuments(databaseName string, collectionName string) (
 		return nil, err
 	}
 
-	books := make([]*model.Book, len(docs))
-	for i, doc := range docs {
-		book := new(model.Book)
-		bsonBytes, _ := bson.Marshal(doc)
-		bson.Unmarshal(bsonBytes, book)
-		books[i] = book
-	}
-	return books, nil
+	return docs, nil
 }
 
 // GetDocumentByKey gets document by given key and respective value
-func (db *MongoDB) GetDocumentByKey(databaseName string, collectionName string, key string, value string) (model.Book, error.Error) {
+func (db *MongoDB) GetDocumentByKey(databaseName string, collectionName string, key string, value interface{}) (interface{}, error.Error) {
 	var err error.Imp
-	var book model.Book
+	var doc interface{}
 
 	session := db.Session.Copy()
 	defer session.Close()
 
 	c := session.DB(databaseName).C(collectionName)
 
-	osErr := c.Find(bson.M{key: value}).One(&book)
+	osErr := c.Find(bson.M{key: value}).One(&doc)
 	if osErr != nil {
 		err.SetErrorMessage(osErr.Error())
 		err.InsertErrorMessage(error.ErrorDBGetDocumentByKey)
-		return book, err
+		return doc, err
 	}
-	return book, nil
+	return doc, nil
 }
 
 // AddDocument adds new document
-func (db *MongoDB) AddDocument(databaseName string, collectionName string, book *model.Book) error.Error {
+func (db *MongoDB) AddDocument(databaseName string, collectionName string, doc interface{}) error.Error {
 	var err error.Imp
 
 	session := db.Session.Copy()
 	defer session.Close()
 
 	c := session.DB(databaseName).C(collectionName)
-	osErr := c.Insert(*book)
+	osErr := c.Insert(doc)
 	if osErr != nil {
 		err.SetErrorMessage(osErr.Error())
 		err.InsertErrorMessage(error.ErrorDBDuplicatedKey)
@@ -135,7 +128,7 @@ func (db *MongoDB) UpdateDocument(databaseName string, collectionName string, bo
 }
 
 // DeleteDocumentByKey deletes document by given key and respective value
-func (db *MongoDB) DeleteDocumentByKey(databaseName string, collectionName string, key string, value string) error.Error {
+func (db *MongoDB) DeleteDocumentByKey(databaseName string, collectionName string, key string, value interface{}) error.Error {
 	var err error.Imp
 
 	session := db.Session.Copy()
@@ -146,7 +139,7 @@ func (db *MongoDB) DeleteDocumentByKey(databaseName string, collectionName strin
 	osErr := c.Remove(bson.M{key: value})
 	if osErr != nil {
 		err.SetErrorMessage(osErr.Error())
-		err.InsertErrorMessage(error.ErrorDBGetDocumentByKey)
+		err.InsertErrorMessage(error.ErrorDBDeleteDocumentByKey)
 		return err
 	}
 	return nil

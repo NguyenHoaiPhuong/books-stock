@@ -1,6 +1,6 @@
 package main
 
-import "books-stock/server/app"
+import "github.com/NguyenHoaiPhuong/books-stock/server/app"
 
 func main() {
 	app := &app.App{}

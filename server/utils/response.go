@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"books-stock/server/error"
+	"github.com/NguyenHoaiPhuong/books-stock/server/error"
 )
 
 // RespondError writes the error messages

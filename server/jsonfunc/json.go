@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"books-stock/server/error"
+	"github.com/NguyenHoaiPhuong/books-stock/server/error"
 )
 
 // ConvertFromJSON converts json object stored in reader and save into user object

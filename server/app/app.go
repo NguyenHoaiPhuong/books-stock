@@ -5,10 +5,11 @@ import (
 	"net/http"
 	"time"
 
-	"books-stock/server/api"
-	"books-stock/server/config"
-	"books-stock/server/error"
-	"books-stock/server/repo"
+	"github.com/NguyenHoaiPhuong/books-stock/server/api"
+	"github.com/NguyenHoaiPhuong/books-stock/server/config"
+	"github.com/NguyenHoaiPhuong/books-stock/server/error"
+	"github.com/NguyenHoaiPhuong/books-stock/server/model"
+	"github.com/NguyenHoaiPhuong/books-stock/server/repo"
 )
 
 // App struct includes router and mongodb session
@@ -51,15 +52,15 @@ func (a *App) initDatabase() {
 		errNew.InsertErrorMessage(error.ErrorAppInit)
 		log.Fatalln(errNew.Error())
 	}
-	a.Database.EnsureIndex(*a.Config.MongoDBConfig.Name, *a.Config.MongoDBConfig.Collection, "id")
+	a.Database.EnsureIndex(*a.Config.MongoDBConfig.DBName, model.BookCol, "id")
 }
 
 func (a *App) initAPI() {
 	a.API = new(api.API)
 	a.API.InitRouter()
 	a.API.RegisterHandleFunction("GET", "/books", a.allBooks)
-	a.API.RegisterHandleFunction("GET", "/book/{isbn}", a.bookByID)
+	a.API.RegisterHandleFunction("GET", "/book/{id}", a.bookByID)
 	a.API.RegisterHandleFunction("POST", "/books", a.addBook)
-	a.API.RegisterHandleFunction("PUT", "/book/{isbn}", a.updateBook)
-	a.API.RegisterHandleFunction("DELETE", "/book/{isbn}", a.deleteBook)
+	a.API.RegisterHandleFunction("PUT", "/book/{id}", a.updateBook)
+	a.API.RegisterHandleFunction("DELETE", "/book/{id}", a.deleteBook)
 }
