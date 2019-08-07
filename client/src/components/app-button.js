@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
+import axios from 'axios';
+import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input, Button } from 'reactstrap'
 import './app-button.css'
 
 export default class AppButton extends Component {
@@ -7,30 +8,57 @@ export default class AppButton extends Component {
         super(props)
     
         this.state = {
-             modal: false
+             addBookDlg: false,
         }
 
-        this.toggle = this.toggle.bind(this);
+        // Event binding
+        this.openAddBookDlg = this.openAddBookDlg.bind(this);
+        this.addNewBook = this.addNewBook.bind(this);
     }
 
-    toggle() {
+    openAddBookDlg() {
         this.setState(prevState => ({
-          modal: !prevState.modal
+            addBookDlg: !prevState.addBookDlg
+        }));
+    }
+
+    addNewBook() {
+        const book = {
+            id: document.getElementById("id").value,
+            title: document.getElementById("title").value,
+            rating: document.getElementById("rating").value
+        };
+        axios.post('http://localhost:9000/books', book).then((response) => {            
+            console.log(response)
+        })
+        this.setState(prevState => ({
+            addBookDlg: !prevState.addBookDlg,
         }));
     }
     
     render() {
         return (
             <div>
-                <Button color="primary" className="AppButton" onClick={this.toggle}>Add New Book</Button>{' '}
-                <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+                <Button color="primary" className="AppButton" onClick={this.openAddBookDlg}>Add Book</Button>{' '}
+                <Modal isOpen={this.state.addBookDlg} toggle={this.openAddBookDlg}>
+                    <ModalHeader toggle={this.openAddBookDlg}>Add a new book</ModalHeader>
                     <ModalBody>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        <FormGroup>
+                            <Label for="id">ID</Label>
+                            <Input id="id" type="text" placeholder="#" />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="title">Title</Label>
+                            <Input id="title" type="text" placeholder="Book title" />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="rating">Rating</Label>
+                            <Input id="rating" type="text" placeholder="Rating" />
+                        </FormGroup>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-                        <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                        <Button color="primary" onClick={this.addNewBook}>Add book</Button>{' '}
+                        <Button color="secondary" onClick={this.openAddBookDlg}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </div>
