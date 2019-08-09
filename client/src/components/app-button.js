@@ -23,27 +23,24 @@ export default class AppButton extends Component {
     }
 
     addNewBook() {
-        const config = {
+        let config = {
             headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': "*",
-                "Access-Control-Allow-Methods": "POST",
+                "Content-Type": "application/x-www-form-urlencoded"               
             }
         }
-        const book = {
+        let book = {
             id: parseInt(document.getElementById("id").value),
             title: document.getElementById("title").value,
             rating: parseFloat(document.getElementById("rating").value),
         };
-        console.log(book)
-        axios.post('http://localhost:9000/books', book, config).then((response) => {            
+        axios.post("http://localhost:9000/books", book, config).then((response) => {            
             console.log(response)
             let newBook = response.data;
             this.props.bookHandler(newBook)
         })
         .catch((err) => {
             console.log("AXIOS ERROR: ", err);
-        })
+        })        
 
         this.setState(prevState => ({
             addBookDlg: !prevState.addBookDlg,

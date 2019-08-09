@@ -26,10 +26,11 @@ export default class App extends Component {
     getBooks = () => this.state.books
 
     addBook = (book) => {
-        this.setState(prevState => (
-            {
-                books: prevState.books.push(book)
-            }));
+        let books = this.state.books
+        books.push(book)
+        this.setState({
+                books: books,
+            });
     }
 
     render() {
