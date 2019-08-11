@@ -29,6 +29,8 @@ func (api *API) RegisterHandleFunction(method string, path string, f func(w http
 		api.post(path, f)
 	case "DELETE":
 		api.delete(path, f)
+	case "OPTIONS":
+		api.authenticate(path, f)
 	}
 }
 
@@ -50,4 +52,8 @@ func (api *API) put(path string, f func(w http.ResponseWriter, r *http.Request))
 // delete wraps the router for DELETE method
 func (api *API) delete(path string, f func(w http.ResponseWriter, r *http.Request)) {
 	api.Router.HandleFunc(path, f).Methods("DELETE")
+}
+
+func (api *API) authenticate(path string, f func(w http.ResponseWriter, r *http.Request)) {
+	api.Router.HandleFunc(path, f).Methods("OPTIONS")
 }

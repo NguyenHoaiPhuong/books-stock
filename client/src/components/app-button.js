@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input, Button } from 'reactstrap'
 import './app-button.css'
 
-export default class AppButton extends Component {
+export default class AddBook extends Component {
     constructor(props) {
         super(props)
     
@@ -25,7 +25,7 @@ export default class AppButton extends Component {
     addNewBook() {
         let config = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",                
+                "Access-Control-Allow-Origin": "*"
             }
         }
         let book = {
@@ -50,7 +50,7 @@ export default class AppButton extends Component {
     render() {
         return (
             <div>
-                <Button color="primary" className="AppButton" onClick={this.openAddBookDlg}>Add Book</Button>{' '}
+                <Button color="primary" className="AddBook" onClick={this.openAddBookDlg}>Add Book</Button>{' '}
                 <Modal isOpen={this.state.addBookDlg} toggle={this.openAddBookDlg}>
                     <ModalHeader toggle={this.openAddBookDlg}>Add a new book</ModalHeader>
                     <ModalBody>

@@ -63,4 +63,6 @@ func (a *App) initAPI() {
 	a.API.RegisterHandleFunction("POST", "/books", a.addBook)
 	a.API.RegisterHandleFunction("PUT", "/book/{id}", a.updateBook)
 	a.API.RegisterHandleFunction("DELETE", "/book/{id}", a.deleteBook)
+	a.API.RegisterHandleFunction("OPTIONS", "/book/{id}", a.enableCORS)
+	a.API.RegisterHandleFunction("OPTIONS", "/books", a.enableCORS)
 }

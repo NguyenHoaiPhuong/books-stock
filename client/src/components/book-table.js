@@ -7,12 +7,11 @@ export default class BookTable extends Component {
     removeBook = function() {
         let config = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "*",
             }
-        }
-        
-        axios.delete(`${this.host}${this.port}/book/${this.bookID}`, config).then((response) => {            
+        }        
+        axios.delete(`${this.host}${this.port}/book/${this.bookID}`, config).then((response) => {
+            console.log('Response:')
             console.log(response)
         })
         .catch((err) => {

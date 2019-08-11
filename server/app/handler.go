@@ -55,9 +55,7 @@ func (a *App) allBooks(w http.ResponseWriter, r *http.Request) {
 func (a *App) addBook(w http.ResponseWriter, r *http.Request) {
 	log.Println("Start adding new book into database")
 
-	// Set up header
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
 
 	var book model.Book
 
@@ -162,11 +160,7 @@ func (a *App) updateBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {
-	// Set up header
-	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
 
 	vars := mux.Vars(r)
 	sid := vars["id"]
@@ -193,4 +187,16 @@ func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("Finish removing book id #%v from database\n", sid)
+}
+
+func (a *App) enableCORS(w http.ResponseWriter, r *http.Request) {
+	log.Println("Enable CORS")
+
+	// Set up header
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Methods")
+	// w.Header().Set("Access-Control-Max-Age", "86400")
+	w.WriteHeader(http.StatusNoContent)
 }
