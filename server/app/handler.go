@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -123,8 +122,13 @@ func (a *App) bookByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) updateBook(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	vars := mux.Vars(r)
 	sid := vars["id"]
+
+	log.Printf("Start updating book id #%v\n", sid)
+
 	id, err := strconv.Atoi(sid)
 	if err != nil {
 		utils.RespondError(w, http.StatusInternalServerError, err.Error())
@@ -155,8 +159,9 @@ func (a *App) updateBook(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%v\n", errNew.Error())
 		return
 	}
-	fmt.Fprintf(w, "Update book with isbn %v into database successfully\n", id)
 	utils.RespondJSON(w, http.StatusOK, book)
+
+	log.Printf("Finish updating book id #%v\n", sid)
 }
 
 func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {

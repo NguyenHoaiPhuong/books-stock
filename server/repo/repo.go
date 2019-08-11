@@ -118,7 +118,7 @@ func (db *MongoDB) UpdateDocument(databaseName string, collectionName string, bo
 	defer session.Close()
 
 	c := session.DB(databaseName).C(collectionName)
-	osErr := c.Update(bson.M{"ID": book.ID}, book)
+	osErr := c.Update(bson.M{"id": book.ID}, book)
 	if osErr != nil {
 		err.SetErrorMessage(osErr.Error())
 		err.InsertErrorMessage(error.ErrorDBUpdateDocument)

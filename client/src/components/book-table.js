@@ -8,7 +8,12 @@ export default class BookTable extends Component {
         super(props)
     
         this.state = {
-            editBookDlg: false,           
+            editBookDlg: false,
+            book: {
+                id: -1,
+                title: "",
+                rating: 0
+            }
         }
     }    
 
@@ -34,21 +39,27 @@ export default class BookTable extends Component {
         })
     }
 
-    editBook() {
+    editBook(book) {
+        this.setState(prevState => ({
+            editBookDlg: !prevState.editBookDlg,
+            book: book
+        }));     
+    }
+
+    modifyBook = () => {
         let config = {
             headers: {
                 "Access-Control-Allow-Origin": "*"
             }
         }
-        let book = {
-            id: parseInt(document.getElementById("id").value),
-            title: document.getElementById("title").value,
-            rating: parseFloat(document.getElementById("rating").value),
+        let newBook = {
+            id: this.state.book.id,
+            title: document.getElementById("title-edit").value,
+            rating: parseFloat(document.getElementById("rating-edit").value),
         };
-        axios.put(this.props.host + this.props.port + "/book/" + book.id.toString(), book, config).then((response) => {            
+        axios.put(this.props.host + this.props.port + "/book/" + this.state.book.id, newBook, config).then((response) => {            
             console.log(response)
-            let newBook = response.data;
-            this.props.bookHandler(newBook)
+            this.props.modifyBookHandler(this.state.book.id, newBook)
         })
         .catch((err) => {
             console.log("AXIOS ERROR: ", err);
@@ -68,7 +79,7 @@ export default class BookTable extends Component {
                     <td className="BookTable-Col-Title">{book.title}</td>
                     <td className="BookTable-Col-Rating">{book.rating}</td>
                     <td className="BookTable-Col-Actions">
-                        <Button color="success" size="sm" className="mr-2">Edit</Button>
+                        <Button color="success" size="sm" className="mr-2" onClick={this.editBook.bind(this, book)}>Edit</Button>
                         <Button color="danger" size="sm" onClick={this.removeBook.bind(this, book.id)}>Delete</Button>
                     </td>
                 </tr>
@@ -96,20 +107,16 @@ export default class BookTable extends Component {
                     <ModalHeader toggle={this.openEditBookDlg}>Edit a book</ModalHeader>
                     <ModalBody>
                         <FormGroup>
-                            <Label for="id">ID</Label>
-                            <Input id="id" type="text" placeholder="#" />
+                            <Label for="title-edit">Title</Label>
+                            <Input id="title-edit" type="text" defaultValue={this.state.book.title} />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="title">Title</Label>
-                            <Input id="title" type="text" placeholder="Book title" />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="rating">Rating</Label>
-                            <Input id="rating" type="text" placeholder="Rating" />
+                            <Label for="rating-edit">Rating</Label>
+                            <Input id="rating-edit" type="text" defaultValue={this.state.book.rating} />
                         </FormGroup>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.editBook}>Edit book</Button>{' '}
+                        <Button color="primary" onClick={this.modifyBook}>Modify book</Button>{' '}
                         <Button color="secondary" onClick={this.openEditBookDlg}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
