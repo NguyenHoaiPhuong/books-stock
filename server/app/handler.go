@@ -16,6 +16,11 @@ import (
 )
 
 func (a *App) allBooks(w http.ResponseWriter, r *http.Request) {
+	log.Println("Start getting all books from database")
+
+	// Set up header
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	docs, err := a.Database.GetAllDocuments(*a.Config.MongoDBConfig.DBName, string(model.BookCol))
 	if err != nil {
 		utils.RespondError(w, http.StatusInternalServerError, error.ErrorDB)
@@ -43,9 +48,18 @@ func (a *App) allBooks(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%v\n", errNew.Error())
 		return
 	}
+
+	log.Println("Finish getting all books from database")
 }
 
 func (a *App) addBook(w http.ResponseWriter, r *http.Request) {
+	log.Println("Start adding new book into database")
+
+	// Set up header
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	var book model.Book
 
 	err := jsonfunc.ConvertFromJSON(r.Body, &book)
@@ -69,8 +83,9 @@ func (a *App) addBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Add new book into database successfully\n")
 	utils.RespondJSON(w, http.StatusOK, book)
+
+	log.Println("Finish adding new book into database")
 }
 
 func (a *App) bookByID(w http.ResponseWriter, r *http.Request) {

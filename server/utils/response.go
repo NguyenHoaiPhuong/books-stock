@@ -25,10 +25,7 @@ func RespondJSON(w http.ResponseWriter, status int, object interface{}) error.Er
 		errNew.SetErrorMessage(err.Error())
 		return errNew
 	}
-	header := w.Header()
-	// header.Add("Access-Control-Allow-Origin", "*")
-	// header.Add("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS")
-	// header.Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)

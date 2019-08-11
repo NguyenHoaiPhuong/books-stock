@@ -4,6 +4,8 @@ import AppTable from './components/app-table';
 import AppButton from './components/app-button';
 import './app.css';
 
+const serverHost = "http://192.168.100.100"
+const serverPort = ":9000"
 
 export default class App extends Component {
     constructor(props) {
@@ -15,7 +17,7 @@ export default class App extends Component {
     }
 
     componentWillMount() {
-        axios.get('http://localhost:9000/books').then((response) => {
+        axios.get(serverHost + serverPort +  '/books').then((response) => {
             this.setState({
                 books: response.data
             })
@@ -36,7 +38,7 @@ export default class App extends Component {
     render() {
         return (
             <div className="App">
-                <AppButton bookHandler={this.addBook} />
+                <AppButton bookHandler={this.addBook} serverHost={serverHost} />
                 <AppTable bookHandler={this.getBooks} />
             </div>
         )
