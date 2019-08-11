@@ -35,11 +35,24 @@ export default class App extends Component {
             });
     }
 
+    removeBook  = (bookID) => {
+        let books = this.state.books
+        for( var i = 0; i < books.length; i++ ){ 
+            if (books[i].id === bookID) {
+                books.splice(i, 1); 
+                break
+            }
+        }
+        this.setState({
+            books: books,
+        });         
+    }
+
     render() {
         return (
             <div className="App">
                 <AddBookModal bookHandler={this.addBook} host={serverHost} port={serverPort} />
-                <BookTable bookHandler={this.getBooks} host={serverHost} port={serverPort} />
+                <BookTable getBooksHandler={this.getBooks} removeBookHandler={this.removeBook} host={serverHost} port={serverPort} />
             </div>
         )
     }
