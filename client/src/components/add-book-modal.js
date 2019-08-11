@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input, Button } from 'reactstrap'
-import './app-button.css'
+import './add-book-modal.css'
 
 export default class AddBook extends Component {
     constructor(props) {
@@ -50,7 +50,7 @@ export default class AddBook extends Component {
     render() {
         return (
             <div>
-                <Button color="primary" className="AddBook" onClick={this.openAddBookDlg}>Add Book</Button>{' '}
+                <Button color="primary" className="AddBookModal" onClick={this.openAddBookDlg}>Add Book</Button>{' '}
                 <Modal isOpen={this.state.addBookDlg} toggle={this.openAddBookDlg}>
                     <ModalHeader toggle={this.openAddBookDlg}>Add a new book</ModalHeader>
                     <ModalBody>

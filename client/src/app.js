@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import BookTable from './components/book-table';
-import AppButton from './components/app-button';
+import AddBookModal from './components/add-book-modal';
 import './app.css';
 
 const serverHost = "http://192.168.100.100"
@@ -38,7 +38,7 @@ export default class App extends Component {
     render() {
         return (
             <div className="App">
-                <AppButton bookHandler={this.addBook} host={serverHost} port={serverPort} />
+                <AddBookModal bookHandler={this.addBook} host={serverHost} port={serverPort} />
                 <BookTable bookHandler={this.getBooks} host={serverHost} port={serverPort} />
             </div>
         )
