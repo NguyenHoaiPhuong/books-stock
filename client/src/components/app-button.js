@@ -25,7 +25,7 @@ export default class AppButton extends Component {
     addNewBook() {
         let config = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/x-www-form-urlencoded",                
             }
         }
         let book = {
@@ -33,7 +33,7 @@ export default class AppButton extends Component {
             title: document.getElementById("title").value,
             rating: parseFloat(document.getElementById("rating").value),
         };
-        axios.post(this.props.serverHost + "/books", book, config).then((response) => {            
+        axios.post(this.props.host + this.props.port + "/books", book, config).then((response) => {            
             console.log(response)
             let newBook = response.data;
             this.props.bookHandler(newBook)

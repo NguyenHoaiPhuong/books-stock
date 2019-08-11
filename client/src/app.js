@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import AppTable from './components/app-table';
+import BookTable from './components/book-table';
 import AppButton from './components/app-button';
 import './app.css';
 
@@ -38,8 +38,8 @@ export default class App extends Component {
     render() {
         return (
             <div className="App">
-                <AppButton bookHandler={this.addBook} serverHost={serverHost} />
-                <AppTable bookHandler={this.getBooks} />
+                <AppButton bookHandler={this.addBook} host={serverHost} port={serverPort} />
+                <BookTable bookHandler={this.getBooks} host={serverHost} port={serverPort} />
             </div>
         )
     }

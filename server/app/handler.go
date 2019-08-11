@@ -58,7 +58,6 @@ func (a *App) addBook(w http.ResponseWriter, r *http.Request) {
 	// Set up header
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	var book model.Book
 
@@ -163,8 +162,17 @@ func (a *App) updateBook(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {
+	// Set up header
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
+
 	vars := mux.Vars(r)
 	sid := vars["id"]
+
+	log.Printf("Start removing book id #%v from database\n", sid)
+
 	id, err := strconv.Atoi(sid)
 	if err != nil {
 		utils.RespondError(w, http.StatusInternalServerError, err.Error())
@@ -184,5 +192,5 @@ func (a *App) deleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Remove book with id %v from database successfully\n", id)
+	log.Printf("Finish removing book id #%v from database\n", sid)
 }

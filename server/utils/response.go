@@ -26,8 +26,6 @@ func RespondJSON(w http.ResponseWriter, status int, object interface{}) error.Er
 		return errNew
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write(bs)
 	return nil
